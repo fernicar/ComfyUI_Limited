@@ -1,6 +1,6 @@
 # ComfyUI_Limited: A Lightweight Alternative
 
-Get started with ComfyUI Limited, a stripped-down alternative to run your [ComfyUI](https://github.com/comfyanonymous/ComfyUI) that meets the minimum requirements for a quick and lightweight graph interface experience.
+Get started with ComfyUI Limited, a stripped-down alternative to run your [ComfyUI](https://github.com/comfyanonymous/ComfyUI) that meets the minimum requirements for a quick and lightweight graph interface experience. Just like a workflow viewer.
 
 ## Why Limited Mode?
 
@@ -88,7 +88,7 @@ Extra code to prevent installations from custom nodes by alternative methods.
 • Currently, ComfyUI Limited only supports 5 custom nodes. If you have more installed, they will load, but may not function as expected.
 • Keep in mind that ComfyUI Limited is a stripped-down instance of ComfyUI, and all features not related to graph nodes will not be available.
 
-## Acknowledgments**
+## Acknowledgments
 
 I would like to thank the original authors of ComfyUI for their work and the contributors to the custom nodes for their contributions to the ComfyUI ecosystem.
 
