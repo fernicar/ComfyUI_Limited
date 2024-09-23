@@ -8,7 +8,7 @@
 # Since embedded distributions do not have pip, you can download pip.pyz, place it next to python.exe, and use it like this:
 # python.exe -s pip.pyz install aiohttp requests --no-warn-script-location
 
-# This list of custom nodes will load without errors (2024-09-20)
+# This list of custom nodes will load without errors (2024-09-23)
 # git clone https://github.com/ltdrdata/ComfyUI-Manager
 # git clone https://github.com/rgthree/rgthree-comfy
 # git clone https://github.com/yolain/ComfyUI-Easy-Use
@@ -18,6 +18,21 @@
 # git clone https://github.com/giriss/comfy-image-saver
 # git clone https://github.com/54rt1n/ComfyUI-DareMerge
 # git clone https://github.com/jags111/efficiency-nodes-comfyui
+# git clone https://github.com/WASasquatch/was-node-suite-comfyui
+# git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG
+# git clone https://github.com/TinyTerra/ComfyUI_tinyterraNodes
+# git clone https://github.com/Nourepide/ComfyUI-Allor
+# git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack
+# git clone https://github.com/crystian/ComfyUI-Crystools
+# git clone https://github.com/Fannovel16/comfyui_controlnet_aux
+# git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus
+# git clone https://github.com/spacepxl/ComfyUI-Florence-2
+# git clone https://github.com/Acly/comfyui-inpaint-nodes
+# git clone https://github.com/EllangoK/ComfyUI-post-processing-nodes
+# git clone https://github.com/cubiq/ComfyUI_essentials
+# git clone https://github.com/chflame163/ComfyUI_LayerStyle
+# git clone https://github.com/BadCafeCode/masquerade-nodes-comfyui
+# git clone https://github.com/receyuki/comfyui-prompt-reader-node
 
 DEBUG = True # You can see which commands are being ignored during testing.
 NO_INSTALLS = True # Prevent pip and git modules from doing its thing
@@ -174,7 +189,7 @@ modules_to_mock = [
 	'segment_anything',
 	'segment_anything.modeling',
 	'segment_anything.modeling.common',
-    'timm',
+	'timm',
 	'timm.models',
 	'timm.models.layers',
 	'timm.models.registry',
