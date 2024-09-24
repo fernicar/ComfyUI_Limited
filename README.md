@@ -4,8 +4,9 @@ Get started with ComfyUI Limited, a stripped-down alternative to run your [Comfy
 
 ## Why Limited Mode?
 
-Limited Mode is a lightweight alternative to ComfyUI, created to provide an alternative method to run your ComfyUI. It's ideal for situations where you need to quickly access the graph interface without the overhead of the full ComfyUI.
-That said, this can be a demo capable of loading workflows with custom nodes and without the installation of requirements that is fast to restart, sort of workflow viewer.
+Using ComfyUI as a workflow viewer can indeed be valuable for various users and developers if it has support for custom nodes. This demo showcase Limited, a lightweight method to run ComfyUI. 
+It's ideal for situations where you need to quickly access the graph interface without the overhead of the full ComfyUI.
+That said, this demo is capable of loading workflows with custom nodes and without the installation of requirements as fast as possible to restart, same as a workflow viewer.
 You can modify the script to suit your needs, like letting certain modules to load for dev purposes.
 
 ## Features
