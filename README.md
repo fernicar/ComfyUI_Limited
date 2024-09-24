@@ -35,9 +35,9 @@ You can modify the script to suit your needs, like letting certain modules to lo
     cd ComfyUI
     ```
 
-2. Install the required packages:
+2. Install the required package in a virtual environment:
     ```sh
-    pip install aiohttp
+    python -s -m pip install aiohttp
     ```
 
 3. Copy limited.py to the root directory of your ComfyUI installation, next to main.py
@@ -85,9 +85,9 @@ Extra code to prevent installations from custom nodes by alternative methods.
 
 ## Important Notes
 
-• ComfyUI Limited is intended for graphical user interface use only, so you won't be able to generate images.
-• Currently, ComfyUI Limited only supports 5 custom nodes. If you have more installed, they will load, but may not function as expected.
-• Keep in mind that ComfyUI Limited is a stripped-down instance of ComfyUI, and all features not related to graph nodes will not be available.
+- ComfyUI Limited is intended for graphical user interface use only, so you won't be able to generate images.
+- Currently, ComfyUI Limited only supports 5 custom nodes. If you have more installed, they will load, but may not function as expected.
+- Keep in mind that ComfyUI Limited is a stripped-down instance of ComfyUI, and all features not related to graph nodes will not be available.
 
 ## Acknowledgments
 
