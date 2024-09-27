@@ -15,7 +15,7 @@ You can modify the script to suit your needs, like letting certain modules to lo
 - Fast: Load the graph interface quickly, without the overhead of the full ComfyUI.
 - Utilizes common practices: ComfyUI Limited uses test-driven development practices to ensure compatibility with your existing ComfyUI setup.
 
-## Limitations**
+## Limitations
 
 - No image generation: ComfyUI Limited does not support generating images.
 - Limited custom node support: ComfyUI Limited only supports 24 custom nodes. If you have more installed, they may load, but may not function as expected.
@@ -88,6 +88,32 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - ComfyUI Limited is intended for graphical user interface use only, so you won't be able to generate images.
 - Currently, ComfyUI Limited only supports 5 custom nodes. If you have more installed, they will load, but may not function as expected.
 - Keep in mind that ComfyUI Limited is a stripped-down instance of ComfyUI, and all features not related to graph nodes will not be available.
+
+## Supported Custom Node list:
+- ltdrdata [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
+- rgthree [rgthree-comfy](https://github.com/rgthree/rgthree-comfy)
+- yolain [ComfyUI-Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
+- Suzie1 [ComfyUI_Comfyroll_CustomNodes](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes)
+- shiimizu [ComfyUI_smZNodes](https://github.com/shiimizu/ComfyUI_smZNodes)
+- pythongosssss [ComfyUI-Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
+- giriss [comfy-image-saver](https://github.com/giriss/comfy-image-saver)
+- 54rt1n [ComfyUI-DareMerge](https://github.com/54rt1n/ComfyUI-DareMerge)
+- jags111 [efficiency-nodes-comfyui](https://github.com/jags111/efficiency-nodes-comfyui)
+- WASasquatch [was-node-suite-comfyui](https://github.com/WASasquatch/was-node-suite-comfyui)
+- ZHO-ZHO-ZHO [ComfyUI-BRIA_AI-RMBG](https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG)
+- TinyTerra [ComfyUI_tinyterraNodes](https://github.com/TinyTerra/ComfyUI_tinyterraNodes)
+- Nourepide [ComfyUI-Allor](https://github.com/Nourepide/ComfyUI-Allor)
+- ltdrdata [ComfyUI-Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
+- crystian [ComfyUI-Crystools](https://github.com/crystian/ComfyUI-Crystools)
+- Fannovel16 [comfyui_controlnet_aux](https://github.com/Fannovel16/comfyui_controlnet_aux)
+- cubiq [ComfyUI_IPAdapter_plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus)
+- spacepxl [ComfyUI-Florence-2](https://github.com/spacepxl/ComfyUI-Florence-2)
+- Acly [comfyui-inpaint-nodes](https://github.com/Acly/comfyui-inpaint-nodes)
+- EllangoK [ComfyUI-post-processing-nodes](https://github.com/EllangoK/ComfyUI-post-processing-nodes)
+- cubiq [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials)
+- chflame163 [ComfyUI_LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle)
+- BadCafeCode [masquerade-nodes-comfyui](https://github.com/BadCafeCode/masquerade-nodes-comfyui)
+- receyuki [comfyui-prompt-reader-node](https://github.com/receyuki/comfyui-prompt-reader-node)
 
 ## Acknowledgments
 
