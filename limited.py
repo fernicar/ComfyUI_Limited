@@ -32,7 +32,10 @@
 # git clone --depth 1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials
 # git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle
 # git clone --depth 1 --filter=blob:none https://github.com/BadCafeCode/masquerade-nodes-comfyui
-# git clone --depth 1 --filter=blob:none https://github.com/receyuki/comfyui-prompt-reader-node
+# git clone --depth 1 --filter=blob:none --recursive https://github.com/receyuki/comfyui-prompt-reader-node
+# (optional recommended)
+# cd ComfyUI-Impact-Pack
+# git clone --depth 1 --filter=blob:none https://github.com/ltdrdata/ComfyUI-Impact-Subpack impact_subpack
 
 DEBUG = True # You can see which commands are being ignored during testing.
 NO_INSTALLS = True # Prevent pip and git modules from doing its thing
