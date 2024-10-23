@@ -14,6 +14,7 @@ You can modify the script to suit your needs, like letting certain modules to lo
 - Lightweight: ComfyUI Limited requires minimal resources, making it suitable for testing and development environments.
 - Fast: Load the graph interface quickly, without the overhead of the full ComfyUI.
 - Utilizes common practices: ComfyUI Limited uses test-driven development practices to ensure compatibility with your existing ComfyUI setup.
+- Compatibility: ComfyUI Limited do not modify your current ComfyUI setup and updates, including custom nodes updates.
 
 ## Limitations
 
@@ -25,31 +26,31 @@ You can modify the script to suit your needs, like letting certain modules to lo
 
 - Python 3.x
 - aiohttp
-- git
+- git for windows
 
 ## Installation
 
-1. Clone ComfyUI repository:
+Copy limited.py to the root directory of your current ComfyUI installation, next to main.py
+
+## Installation from scratch
+
+1. Lightweight Clone ComfyUI repository and ComfyUI-Manager (recommended):
     ```sh
-    git clone https://github.com/comfyanonymous/ComfyUI
-    cd ComfyUI
+    git clone --depth 1 --filter=blob:none https://github.com/comfyanonymous/ComfyUI
+    cd ComfyUI\custom_nodes
+    git clone --depth 1 --filter=blob:none https://github.com/ltdrdata/ComfyUI-Manager
     ```
 
-2. Install the required package in a virtual environment:
+2. Install the minimum required dependency package in a virtual environment:
     ```sh
     python -s -m pip install aiohttp
     ```
 
 3. Copy limited.py to the root directory of your ComfyUI installation, next to main.py
 
-4. Run limited.py instead of main.py:
-    ```sh
-    python -s limited.py --cpu --windows-standalone-build --port 8189
-    ```
-
 ## Usage
 
-Run ComfyUI limited, change port if you want:
+Run ComfyUI Limited like this, change port if you want (or make a bat file):
 ```sh
 python -s limited.py --cpu --windows-standalone-build --port 8189
 ```
@@ -57,23 +58,24 @@ python -s limited.py --cpu --windows-standalone-build --port 8189
 ### Arguments
 
 - `-s`: Run python with disable the import of the site module.
-- `--cpu`: use cpu, no gpu
+- `--cpu`: use cpu, not gpu
 - `--port`: custom port, allow to free standard ComfyUI port 8188.
 - `--windows-standalone-build`: open the web browser when ready.
 
 ## Uninstallation
 
 - Delete limited.py file.
+- Delete limited_modules.log file
 
 ## Code Overview
 
 ### `whitelist` list
 
-Contains the modules this script should not block its load.
+Contains the modules this script should not prevent its load.
 
 ### `modules_to_mock` list
 
-Contains the blacklist of modules to block its load by using a dummy module.
+Contains the blacklist of modules to prevent its load by using a dummy module.
 
 ### `DEBUG` variable
 
@@ -86,15 +88,15 @@ Extra code to prevent installations from custom nodes by alternative methods.
 ## Important Notes
 
 - ComfyUI Limited is intended for graphical user interface use only, so you won't be able to generate images.
-- Currently, ComfyUI Limited only supports 5 custom nodes. If you have more installed, they will load, but may not function as expected.
+- ComfyUI Limited now supports dynamically loading custom nodes, provided they aren’t too complex.
 - Keep in mind that ComfyUI Limited is a stripped-down instance of ComfyUI, and all features not related to graph nodes will not be available.
 
-## Supported Custom Node list:
+## Tested Custom Nodes:
 - ltdrdata [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
 - rgthree [rgthree-comfy](https://github.com/rgthree/rgthree-comfy)
-- yolain [ComfyUI-Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
-- Suzie1 [ComfyUI_Comfyroll_CustomNodes](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes)
-- shiimizu [ComfyUI_smZNodes](https://github.com/shiimizu/ComfyUI_smZNodes)
+- yolain [ComfyUI-Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) *
+- Suzie1 [ComfyUI_Comfyroll_CustomNodes](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes) *
+- shiimizu [ComfyUI_smZNodes](https://github.com/shiimizu/ComfyUI_smZNodes) *
 - pythongosssss [ComfyUI-Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 - giriss [comfy-image-saver](https://github.com/giriss/comfy-image-saver)
 - 54rt1n [ComfyUI-DareMerge](https://github.com/54rt1n/ComfyUI-DareMerge)
@@ -102,18 +104,25 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - WASasquatch [was-node-suite-comfyui](https://github.com/WASasquatch/was-node-suite-comfyui)
 - ZHO-ZHO-ZHO [ComfyUI-BRIA_AI-RMBG](https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG)
 - TinyTerra [ComfyUI_tinyterraNodes](https://github.com/TinyTerra/ComfyUI_tinyterraNodes)
-- Nourepide [ComfyUI-Allor](https://github.com/Nourepide/ComfyUI-Allor)
+- Nourepide [ComfyUI-Allor](https://github.com/Nourepide/ComfyUI-Allor) *
 - ltdrdata [ComfyUI-Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-- crystian [ComfyUI-Crystools](https://github.com/crystian/ComfyUI-Crystools)
-- Fannovel16 [comfyui_controlnet_aux](https://github.com/Fannovel16/comfyui_controlnet_aux)
+- crystian [ComfyUI-Crystools](https://github.com/crystian/ComfyUI-Crystools) *
+- Fannovel16 [comfyui_controlnet_aux](https://github.com/Fannovel16/comfyui_controlnet_aux) *
 - cubiq [ComfyUI_IPAdapter_plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus)
 - spacepxl [ComfyUI-Florence-2](https://github.com/spacepxl/ComfyUI-Florence-2)
 - Acly [comfyui-inpaint-nodes](https://github.com/Acly/comfyui-inpaint-nodes)
 - EllangoK [ComfyUI-post-processing-nodes](https://github.com/EllangoK/ComfyUI-post-processing-nodes)
 - cubiq [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials)
-- chflame163 [ComfyUI_LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle)
+- chflame163 [ComfyUI_LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle) *
 - BadCafeCode [masquerade-nodes-comfyui](https://github.com/BadCafeCode/masquerade-nodes-comfyui)
 - receyuki [comfyui-prompt-reader-node](https://github.com/receyuki/comfyui-prompt-reader-node)
+- M1kep [ComfyLiterals](https://github.com/M1kep/ComfyLiterals)
+- WASasquatch [ComfyUI_Preset_Merger](https://github.com/WASasquatch/ComfyUI_Preset_Merger)
+- filliptm [ComfyUI_Fill-Nodes](https://github.com/filliptm/ComfyUI_Fill-Nodes)
+- ssitu [ComfyUI_UltimateSDUpscale](https://github.com/ssitu/ComfyUI_UltimateSDUpscale)
+- Ttl [ComfyUi_NNLatentUpscale](https://github.com/Ttl/ComfyUi_NNLatentUpscale)
+
+  (* the complexity of this custom nodes required extra effort)
 
 ## Acknowledgments
 

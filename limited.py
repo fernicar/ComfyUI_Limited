@@ -1,3 +1,4 @@
+# https://github.com/fernicar/ComfyUI_Limited
 # These are the only requirements by ComfyUI Limited; torch and similar packages will not load.
 # python.exe -s -m pip install aiohttp --no-warn-script-location
 
@@ -23,6 +24,7 @@ git clone --depth 1 --filter=blob:none https://github.com/ZHO-ZHO-ZHO/ComfyUI-BR
 git clone --depth 1 --filter=blob:none https://github.com/TinyTerra/ComfyUI_tinyterraNodes
 git clone --depth 1 --filter=blob:none https://github.com/Nourepide/ComfyUI-Allor
 git clone --depth 1 --filter=blob:none https://github.com/ltdrdata/ComfyUI-Impact-Pack
+git clone --depth 1 --filter=blob:none https://github.com/ltdrdata/ComfyUI-Impact-Subpack ComfyUI-Impact-Pack/impact_subpack
 git clone --depth 1 --filter=blob:none https://github.com/crystian/ComfyUI-Crystools
 git clone --depth 1 --filter=blob:none https://github.com/Fannovel16/comfyui_controlnet_aux
 git clone --depth 1 --filter=blob:none https://github.com/cubiq/ComfyUI_IPAdapter_plus
@@ -32,8 +34,7 @@ git clone --depth 1 --filter=blob:none https://github.com/EllangoK/ComfyUI-post-
 git clone --depth 1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials
 git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle
 git clone --depth 1 --filter=blob:none https://github.com/BadCafeCode/masquerade-nodes-comfyui
-git clone --depth 1 --filter=blob:none --recursive --recursive https://github.com/receyuki/comfyui-prompt-reader-node
-git clone --depth 1 --filter=blob:none https://github.com/ltdrdata/ComfyUI-Impact-Subpack ComfyUI-Impact-Pack/impact_subpack
+git clone --depth 1 --filter=blob:none https://github.com/receyuki/comfyui-prompt-reader-node --recursive
 git clone --depth 1 --filter=blob:none https://github.com/M1kep/ComfyLiterals
 git clone --depth 1 --filter=blob:none https://github.com/WASasquatch/ComfyUI_Preset_Merger
 git clone --depth 1 --filter=blob:none https://github.com/filliptm/ComfyUI_Fill-Nodes
@@ -132,8 +133,7 @@ if NO_INSTALLS:
 
     def mock_run(*args, **kwargs): # Needs more work to mimic each output from pip
         if 'pip' in args[0]:
-            if DEBUG:
-                print(f">\tHandle for intercepted subprocess.run pip command: {args}")
+            if DEBUG: print(f">\tHandle for intercepted subprocess.run pip command: {args}")
             if 'show' in args[0]:
                 return SimpleNamespace(returncode=0, stdout='WARNING: Package(s) not found: ' + args[0][-1] + '\n', stderr='')
             if 'freeze' in args[0]:
@@ -144,8 +144,7 @@ if NO_INSTALLS:
                 return SimpleNamespace(returncode=0, stdout='', stderr='')
             return SimpleNamespace(returncode=1, stdout='', stderr="ERROR: (see \"pip help\")\n")
         else:
-            if DEBUG:
-                print(f">\tNeed handle for Intercepted subprocess.run command: {args[0]}")
+            if DEBUG: print(f">\tNeed handle for Intercepted subprocess.run command: {args[0]}")
         return original_run(*args, **kwargs)
 
     subprocess.run = mock_run
@@ -155,8 +154,7 @@ if NO_INSTALLS:
 
     def mock_check_output(*args, **kwargs): # Needs more work to mimic each output from pip
         if 'pip' in args[0]:
-            if DEBUG:
-                print(f">\tHandle for intercepted subprocess.check_output pip command: {args}")
+            if DEBUG: print(f">\tHandle for intercepted subprocess.check_output pip command: {args}")
             if 'show' in args[0]:
                 return b'WARNING: Package(s) not found: ' + args[0][-1].encode() + b'\n'
             if 'freeze' in args[0]:
@@ -167,8 +165,7 @@ if NO_INSTALLS:
                 return b''
             return b"ERROR: (see \"pip help\")\n"
         else:
-            if DEBUG:
-                print(f">\tNeed handle for Intercepted subprocess.check_output command: {args[0]}")
+            if DEBUG: print(f">\tNeed handle for Intercepted subprocess.check_output command: {args[0]}")
         return original_check_output(*args, **kwargs)
 
     subprocess.check_output = mock_check_output
@@ -206,19 +203,7 @@ if NO_INSTALLS:
         pip._internal.main = pip_install_wrapper
 # End of installer modules ------------------------------------------------------------------------
 
-if 'diffusers' in modules_to_mock:
-    import importlib.metadata
-    # Save the original function
-    original_version = importlib.metadata.version
-    # Define the monkeypatched version function for ComfyUI-Easy-Use checks
-    def mock_version(package):
-        if package == "diffusers":
-            return "0.27.2"
-        print(f">\tmock_version package: {package}")
-        return original_version(package)
-    # Apply the monkeypatch
-    importlib.metadata.version = mock_version
-
+import importlib.metadata
 import importlib.util
 # Mock the find_spec function globally for ComfyUI-Easy-Use, ComfyUI_smZNode
 original_find_spec = importlib.util.find_spec
@@ -247,13 +232,6 @@ def custom_fix(modules_to_mock):
             def __init_subclass__(cls, **kwargs):
                 pass
         sys.modules['huggingface_hub'].PyTorchModelHubMixin = MockPyTorchModelHubMixin
-
-    if 'timm.models.layers' in modules_to_mock and 'timm.models.layers' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('timm.models.layers')
-        if DEBUG: print(f">\tThe workarround for comfyui_controlnet_aux numpy.pi is applied")
-        sys.modules['timm.models.layers'].DropPath = MockTypeMetaclass
-        sys.modules['timm.models.layers'].to_2tuple = MockTypeMetaclass
-        sys.modules['timm.models.layers'].trunc_normal_ = MockTypeMetaclass
     # for ComfyUI-Crystools pynvml.nvmlDeviceGetCount return 0
     if 'pynvml' in modules_to_mock and 'pynvml' not in modules_with_applied_fixes:
         modules_with_applied_fixes.add('pynvml')
@@ -269,11 +247,20 @@ def custom_fix(modules_to_mock):
         modules_with_applied_fixes.add('matplotlib')
         if DEBUG: print(f">\tThe workarround for clipseg.py and ComfyUI_Comfyroll_CustomNodes unknown problem is applied")
         sys.modules['matplotlib.colors'] = MagicMock()
+    # for ComfyUI-Easy-Use checks define the monkeypatched version function
+    if 'diffusers' in modules_to_mock and 'diffusers' not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add('diffusers')
+        original_version = importlib.metadata.version # Save the original function
+        def mock_version(package):
+            if package == "diffusers":
+                return "0.27.2"
+            if DEBUG: print(f">\tmock_version package: {package}")
+            return original_version(package)
+        importlib.metadata.version = mock_version # Apply the monkeypatch
 
 # End of specific checks by custom nodes------------------------------------------------------------
 
 def patch_after_init_extra_nodes():
-    import sys
     if 'ComfyUI-Crystools' in sys.modules:
         module = sys.modules['ComfyUI-Crystools']
         if DEBUG: print(f'\n>----------sys.modules[\'ComfyUI-Crystools\']\n{dir(module)}')
@@ -284,11 +271,12 @@ def patch_after_init_extra_nodes():
         if DEBUG: print(f">\tThe workarround for ComfyUI-Crystools hardware monitor crash is applied")
     custom_fix(sys.modules)
 
+import os
 def get_modules_to_mock(log_file_path):
     if os.path.exists(log_file_path):
         with open(log_file_path, 'r') as file:
-            return set(file.read().splitlines())
-    return set()
+            return file.read().splitlines()
+    return []
 
 def update_log_file(log_file_path, module_name):
     with open(log_file_path, 'a') as file:
@@ -322,7 +310,7 @@ def load_custom_node(module_path: str, ignore=set(), module_parent="custom_nodes
         del sys.modules[module_name]
     return True
 
-log_file_path = 'limited_modules.log'
+log_file_path = os.path.join(os.path.dirname(__file__), 'limited_modules.log')
 log_modules_to_mock = modules_to_mock
 modules_to_mock = get_modules_to_mock(log_file_path)
 log_modules_to_mock.extend(modules_to_mock)
@@ -338,7 +326,7 @@ def retry_load_custom_node(module_path: str, ignore=set(), module_parent="custom
             return True
         else:
             if DEBUG: print(f">\tMissing module: {missing_module}")
-            modules_to_mock.add(missing_module)
+            modules_to_mock.append(missing_module)
             update_log_file(log_file_path, missing_module)
             mock_modules([missing_module])
             log_modules_to_mock.append(missing_module)
@@ -352,7 +340,6 @@ if DEBUG: print(f"---------------Disabled modules by Limited: {log_modules_to_mo
 
 
 # Now you can run the original main.py from ComfyUI with Limited functionality
-import os
 
 force_arg = ["--cpu"]
 # Check if custom --port is provided by console command, else leave ComfyUI default port 8188 free.
