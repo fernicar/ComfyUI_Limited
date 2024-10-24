@@ -121,6 +121,7 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - filliptm [ComfyUI_Fill-Nodes](https://github.com/filliptm/ComfyUI_Fill-Nodes)
 - ssitu [ComfyUI_UltimateSDUpscale](https://github.com/ssitu/ComfyUI_UltimateSDUpscale)
 - Ttl [ComfyUi_NNLatentUpscale](https://github.com/Ttl/ComfyUi_NNLatentUpscale)
+- huchenlei [ComfyUI-layerdiffuse](https://github.com/huchenlei/ComfyUI-layerdiffuse) *
 
   (* the complexity of this custom nodes required extra effort)
 

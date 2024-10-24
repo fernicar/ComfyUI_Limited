@@ -40,12 +40,17 @@ git clone --depth 1 --filter=blob:none https://github.com/WASasquatch/ComfyUI_Pr
 git clone --depth 1 --filter=blob:none https://github.com/filliptm/ComfyUI_Fill-Nodes
 git clone --depth 1 --filter=blob:none https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 git clone --depth 1 --filter=blob:none https://github.com/Ttl/ComfyUi_NNLatentUpscale
+git clone --depth 1 --filter=blob:none https://github.com/huchenlei/ComfyUI-layerdiffuse
 """
 
 DEBUG = False # You can see which commands are being ignored during testing.
 NO_INSTALLS = True # Prevent pip and git modules from doing its thing
 
 import sys
+import os
+import re
+import traceback
+import importlib
 from unittest.mock import MagicMock
 
 modules_to_mock = [
@@ -94,8 +99,25 @@ modules_to_mock = [
     'pip.main',
 ]
 
+# Path to the text file containing module names
+whitelist_path = os.path.join(os.path.dirname(__file__), 'limited_whitelist.log')
+
 # Example whitelist
 whitelist = ['aiohttp']
+# Read the module names from the file
+if os.path.exists(whitelist_path):
+    with open(whitelist_path, 'r') as file:
+        modules = file.read().splitlines()
+        whitelist.extend(modules)
+
+# Import each module dynamically
+for module_name in whitelist:
+    try:
+        module = importlib.import_module(module_name)
+        if DEBUG: print(f">\tSuccessfully imported {module_name}")
+    except ImportError as e:
+        if DEBUG: print(f">\tError importing {module_name}: {e}")
+
 # Function to remove whitelisted modules and their submodules
 def remove_whitelisted_modules(modules, whitelist):
     return [module for module in modules if not any(module == w or module.startswith(w + '.') for w in whitelist)]
@@ -257,6 +279,24 @@ def custom_fix(modules_to_mock):
             if DEBUG: print(f">\tmock_version package: {package}")
             return original_version(package)
         importlib.metadata.version = mock_version # Apply the monkeypatch
+    # for ComfyUI-layerdiffuse version checks define the monkeypatched parse function
+    if 'packaging.version' in modules_to_mock and 'packaging.version' not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add('packaging.version')
+        if DEBUG: print(f">\tThe workarround for ComfyUI-layerdiffuse version checks from parse is applied")
+        def mock_parse(version): # Define the custom parse function
+            return version
+        # Assign the custom parse function to the MagicMock object
+        sys.modules['packaging.version'].parse = mock_parse
+    # for ComfyUI-layerdiffuse avoid class UNet1024(ModelMixin, ConfigMixin): TypeError: metaclass conflict
+    if 'diffusers.models.modeling_utils' in modules_to_mock and 'diffusers.models.modeling_utils' not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add('diffusers.models.modeling_utils')
+        if DEBUG: print(f">\tThe workarround for ComfyUI-layerdiffuse avoid TypeError: metaclass conflict is applied")
+        class MockModelMixin(type): # Mock ModelMixin as a subclass of type
+                pass
+        sys.modules['diffusers.models.modeling_utils'].ModelMixin = MockModelMixin
+        class MockConfigMixin(metaclass=MockModelMixin): # Mock MockConfigMixin as a subclass of MockModelMixin
+                pass
+        sys.modules['diffusers.configuration_utils'].ConfigMixin = MockConfigMixin
 
 # End of specific checks by custom nodes------------------------------------------------------------
 
@@ -271,7 +311,6 @@ def patch_after_init_extra_nodes():
         if DEBUG: print(f">\tThe workarround for ComfyUI-Crystools hardware monitor crash is applied")
     custom_fix(sys.modules)
 
-import os
 def get_modules_to_mock(log_file_path):
     if os.path.exists(log_file_path):
         with open(log_file_path, 'r') as file:
@@ -284,6 +323,7 @@ def update_log_file(log_file_path, module_name):
 
 def mock_modules(modules):
     for module in modules:
+        if DEBUG: print(f'>\t{module} will be mocked')
         sys.modules[module] = MagicMock()
     custom_fix(modules)
 
@@ -302,10 +342,23 @@ def load_custom_node(module_path: str, ignore=set(), module_parent="custom_nodes
         sys.modules[module_name] = module
         module_spec.loader.exec_module(module)
     except Exception as e:
-        error_message = str(e).split("'")[0]
-        if error_message == 'No module named ':
-            return str(e).split("'")[1]
-        else: return False
+        error_message = str(e)
+        match = re.search(r"No module named '([^']+)'", error_message)
+        if not match:
+            match = re.search(r"([a-zA-Z_][a-zA-Z0-9_]*\.[a-zA-Z_][a-zA-Z0-9_]*)\.[a-zA-Z_][a-zA-Z0-9_]* failed to import", error_message)
+        if not match or match in sys.modules:
+            match = re.search(r"([^']+) failed to import", error_message)
+        if match:
+            if DEBUG: print(f'>\t{match.group(1)} from error_message: {e}')
+            return match.group(1)
+        # error_message = str(e).split("'")[0]
+        # if error_message == 'No module named ':
+        #     return str(e).split("'")[1]
+        else:
+            if DEBUG: print(f'>\t{module_name} needs workarround for: {e}')
+            if DEBUG: print(traceback.format_exc())
+            exit()
+            return False
     if module_name in sys.modules:
         del sys.modules[module_name]
     return True
@@ -348,9 +401,13 @@ if "--port" not in sys.argv:
 
 # Mimic the behavior of the "python -s" option by removing user site-packages
 if hasattr(sys, 'base_prefix'):
-    user_site = os.path.join(sys.base_prefix, 'lib', 'python' + sys.version[:3], 'site-packages')
+    user_site = os.path.join(sys.base_prefix, 'lib', 'site-packages')
     if user_site in sys.path:
         sys.path.remove(user_site)
+# Remove global site-packages directory preventing installed modules to load if not whitelisted.
+global_site = os.path.join(sys.prefix, 'lib', 'site-packages')
+if global_site in sys.path:
+    sys.path.remove(global_site)
 
 # Construct the path to ComfyUI's main.py dynamically
 main_path = os.path.join(os.path.dirname(__file__), 'main.py')
