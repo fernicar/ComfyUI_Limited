@@ -9,7 +9,7 @@
 # Since embedded distributions do not have pip, you can download pip.pyz, place it next to python.exe, and use it like this:
 # python.exe -s pip.pyz install aiohttp --no-warn-script-location
 
-""" This list of custom nodes will load without errors (2024-10-21)
+""" This list of custom nodes will load without errors (2024-11-01)
 git clone --depth 1 --filter=blob:none https://github.com/ltdrdata/ComfyUI-Manager
 git clone --depth 1 --filter=blob:none https://github.com/rgthree/rgthree-comfy
 git clone --depth 1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use
@@ -41,6 +41,15 @@ git clone --depth 1 --filter=blob:none https://github.com/filliptm/ComfyUI_Fill-
 git clone --depth 1 --filter=blob:none https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 git clone --depth 1 --filter=blob:none https://github.com/Ttl/ComfyUi_NNLatentUpscale
 git clone --depth 1 --filter=blob:none https://github.com/huchenlei/ComfyUI-layerdiffuse
+git clone --depth 1 --filter=blob:none https://github.com/giriss/comfy-image-saver
+git clone --depth 1 --filter=blob:none https://github.com/BlenderNeko/ComfyUI_ADV_CLIP_emb
+git clone --depth 1 --filter=blob:none https://github.com/comfyanonymous/ComfyUI_experiments
+git clone --depth 1 --filter=blob:none https://github.com/bvhari/ComfyUI_ImageProcessing
+git clone --depth 1 --filter=blob:none https://github.com/Jcd1230/rembg-comfyui-node
+git clone --depth 1 --filter=blob:none https://github.com/Loewen-Hob/rembg-comfyui-node-better
+git clone --depth 1 --filter=blob:none https://github.com/Mamaaaamooooo/batchImg-rembg-ComfyUI-nodes
+git clone --depth 1 --filter=blob:none https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes
+git clone --depth 1 --filter=blob:none https://github.com/fssorc/ComfyUI_FaceShaper
 """
 
 DEBUG = False # You can see which commands are being ignored during testing.
@@ -52,6 +61,8 @@ import re
 import traceback
 import importlib
 from unittest.mock import MagicMock
+import importlib.metadata
+import importlib.util
 
 modules_to_mock = [
     # primary ComfyUI modules
@@ -225,27 +236,28 @@ if NO_INSTALLS:
         pip._internal.main = pip_install_wrapper
 # End of installer modules ------------------------------------------------------------------------
 
-import importlib.metadata
-import importlib.util
 # Mock the find_spec function globally for ComfyUI-Easy-Use, ComfyUI_smZNode
 original_find_spec = importlib.util.find_spec
 importlib.util.find_spec = MagicMock(return_value=None)
 
 modules_with_applied_fixes = set()
 def custom_fix(modules_to_mock):
+    global whitelist
     global modules_with_applied_fixes
     # Mock the module class to have the same metaclass as type
     class MockTypeMetaclass:
         pass
     # for ComfyUI-Allor avoid class CustomAbstractSession(CustomBaseSession, CustomSessionContainer): TypeError: metaclass conflict
-    if 'rembg.sessions' in modules_to_mock and 'rembg.sessions' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('rembg.sessions')
-        if DEBUG: print(f">\tThe workarround for ComfyUI-Allor avoid TypeError: metaclass conflict is applied")
-        sys.modules['rembg.sessions'].BaseSession = MockTypeMetaclass
+    module = 'rembg.sessions'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-Allor avoid TypeError: metaclass conflict is applied")
+        sys.modules[module].BaseSession = MockTypeMetaclass
     # for ComfyUI_LayerStyle avoid class BiRefNet(nn.Module, PyTorchModelHubMixin): TypeError: metaclass conflict
-    if 'huggingface_hub' in modules_to_mock and 'huggingface_hub' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('huggingface_hub')
-        if DEBUG: print(f">\tThe workarround for ComfyUI_LayerStyle avoid TypeError: metaclass conflict is applied")
+    module = 'huggingface_hub'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI_LayerStyle avoid TypeError: metaclass conflict is applied")
         class MockNNModule(type): # Mock nn.Module as a subclass of type
             def __init_subclass__(cls, **kwargs):
                 pass
@@ -253,25 +265,29 @@ def custom_fix(modules_to_mock):
         class MockPyTorchModelHubMixin(MockNNModule): # Mock PyTorchModelHubMixin as a subclass of MockNNModule
             def __init_subclass__(cls, **kwargs):
                 pass
-        sys.modules['huggingface_hub'].PyTorchModelHubMixin = MockPyTorchModelHubMixin
+        sys.modules[module].PyTorchModelHubMixin = MockPyTorchModelHubMixin
     # for ComfyUI-Crystools pynvml.nvmlDeviceGetCount return 0
-    if 'pynvml' in modules_to_mock and 'pynvml' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('pynvml')
-        if DEBUG: print(f">\tThe workarround for ComfyUI-Crystools pynvml.nvmlDeviceGetCount return 0 is applied")
-        sys.modules['pynvml'].nvmlDeviceGetCount.return_value = 0
+    module = 'pynvml'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-Crystools pynvml.nvmlDeviceGetCount return 0 is applied")
+        sys.modules[module].nvmlDeviceGetCount.return_value = 0
     # for comfyui_controlnet_aux numpy.pi
-    if 'numpy' in modules_to_mock and 'numpy' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('numpy')
-        if DEBUG: print(f">\tThe workarround for comfyui_controlnet_aux numpy.pi is applied")
-        sys.modules['numpy'].configure_mock(pi=3.14159265359)
+    module = 'numpy'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for comfyui_controlnet_aux numpy.pi is applied")
+        sys.modules[module].configure_mock(pi=3.14159265359)
     # for clipseg.py and ComfyUI_Comfyroll_CustomNodes unknown problem
-    if 'matplotlib' in modules_to_mock and 'matplotlib' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('matplotlib')
-        if DEBUG: print(f">\tThe workarround for clipseg.py and ComfyUI_Comfyroll_CustomNodes unknown problem is applied")
+    module = 'matplotlib'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for clipseg.py and ComfyUI_Comfyroll_CustomNodes unknown problem is applied")
         sys.modules['matplotlib.colors'] = MagicMock()
     # for ComfyUI-Easy-Use checks define the monkeypatched version function
-    if 'diffusers' in modules_to_mock and 'diffusers' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('diffusers')
+    module = 'diffusers'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
         original_version = importlib.metadata.version # Save the original function
         def mock_version(package):
             if package == "diffusers":
@@ -280,23 +296,34 @@ def custom_fix(modules_to_mock):
             return original_version(package)
         importlib.metadata.version = mock_version # Apply the monkeypatch
     # for ComfyUI-layerdiffuse version checks define the monkeypatched parse function
-    if 'packaging.version' in modules_to_mock and 'packaging.version' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('packaging.version')
-        if DEBUG: print(f">\tThe workarround for ComfyUI-layerdiffuse version checks from parse is applied")
+    module = 'packaging.version'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-layerdiffuse version checks from parse is applied")
         def mock_parse(version): # Define the custom parse function
             return version
         # Assign the custom parse function to the MagicMock object
-        sys.modules['packaging.version'].parse = mock_parse
+        sys.modules[module].parse = mock_parse
     # for ComfyUI-layerdiffuse avoid class UNet1024(ModelMixin, ConfigMixin): TypeError: metaclass conflict
-    if 'diffusers.models.modeling_utils' in modules_to_mock and 'diffusers.models.modeling_utils' not in modules_with_applied_fixes:
-        modules_with_applied_fixes.add('diffusers.models.modeling_utils')
-        if DEBUG: print(f">\tThe workarround for ComfyUI-layerdiffuse avoid TypeError: metaclass conflict is applied")
+    module = 'diffusers.models.modeling_utils'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-layerdiffuse avoid TypeError: metaclass conflict is applied")
         class MockModelMixin(type): # Mock ModelMixin as a subclass of type
                 pass
-        sys.modules['diffusers.models.modeling_utils'].ModelMixin = MockModelMixin
+        sys.modules[module].ModelMixin = MockModelMixin
         class MockConfigMixin(metaclass=MockModelMixin): # Mock MockConfigMixin as a subclass of MockModelMixin
                 pass
         sys.modules['diffusers.configuration_utils'].ConfigMixin = MockConfigMixin
+    # for efficiency-nodes-comfyui mocking simpleeval to get more nodes loaded
+    module = 'efficiency-nodes-comfyui'
+    if module in sys.modules and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        module_to_mock = 'simpleeval'
+        if module_to_mock not in whitelist: 
+            if DEBUG: print(f"\t>The Workaround efficiency-nodes-comfyui load simpleeval dependent nodes is applied for next restart")
+            sys.modules[module_to_mock] = MagicMock()
+            update_log_file(log_file_path, module_to_mock)
 
 # End of specific checks by custom nodes------------------------------------------------------------
 
@@ -308,7 +335,7 @@ def patch_after_init_extra_nodes():
         def mock_startMonitor(*args, **kwargs):
             return None
         module.CMonitor.startMonitor = mock_startMonitor
-        if DEBUG: print(f">\tThe workarround for ComfyUI-Crystools hardware monitor crash is applied")
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-Crystools hardware monitor crash is applied")
     custom_fix(sys.modules)
 
 def get_modules_to_mock(log_file_path):
@@ -355,7 +382,7 @@ def load_custom_node(module_path: str, ignore=set(), module_parent="custom_nodes
         # if error_message == 'No module named ':
         #     return str(e).split("'")[1]
         else:
-            if DEBUG: print(f'>\t{module_name} needs workarround for: {e}')
+            if DEBUG: print(f'>\t{module_name} needs Workaround for: {e}')
             if DEBUG: print(traceback.format_exc())
             exit()
             return False
@@ -415,6 +442,7 @@ main_path = os.path.join(os.path.dirname(__file__), 'main.py')
 # Run main.py with arguments
 if __name__ == "__main__":
     sys.argv = [main_path] + sys.argv[1:] + force_arg
+    patterntext = "    nodes.init_extra_nodes(init_custom_nodes=not args.disable_all_custom_nodes)"
     replacement = """
     original_load_custom_node = nodes.load_custom_node
     def monkeypatch_load_custom_node(module_path: str, ignore=set(), module_parent="custom_nodes") -> bool:
@@ -429,7 +457,14 @@ if __name__ == "__main__":
 
     with open(main_path) as f:
         code = f.read()
-        # Search init_extra_nodes and add patch_after_init_extra_nodes line
-        code = code.replace("    nodes.init_extra_nodes(init_custom_nodes=not args.disable_all_custom_nodes)", replacement)
-        code = compile(code, main_path, 'exec') # Compile and execute the modified code
-        exec(code)
+        if patterntext in code:
+            # Search init_extra_nodes and add patch_after_init_extra_nodes line
+            code = code.replace(patterntext, replacement)
+        else:
+            raise ValueError("Expected pattern not found in main.py")
+        try:
+            code = compile(code, main_path, 'exec') # Compile and execute the modified code
+            exec(code)
+        except Exception as e:
+            traceback.print_exc()
+            print(f"An error occurred while executing the code from {main_path}: {e}")

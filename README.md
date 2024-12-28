@@ -100,7 +100,7 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - pythongosssss [ComfyUI-Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 - giriss [comfy-image-saver](https://github.com/giriss/comfy-image-saver)
 - 54rt1n [ComfyUI-DareMerge](https://github.com/54rt1n/ComfyUI-DareMerge)
-- jags111 [efficiency-nodes-comfyui](https://github.com/jags111/efficiency-nodes-comfyui)
+- jags111 [efficiency-nodes-comfyui](https://github.com/jags111/efficiency-nodes-comfyui) *
 - WASasquatch [was-node-suite-comfyui](https://github.com/WASasquatch/was-node-suite-comfyui)
 - ZHO-ZHO-ZHO [ComfyUI-BRIA_AI-RMBG](https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG)
 - TinyTerra [ComfyUI_tinyterraNodes](https://github.com/TinyTerra/ComfyUI_tinyterraNodes)
@@ -122,6 +122,15 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - ssitu [ComfyUI_UltimateSDUpscale](https://github.com/ssitu/ComfyUI_UltimateSDUpscale)
 - Ttl [ComfyUi_NNLatentUpscale](https://github.com/Ttl/ComfyUi_NNLatentUpscale)
 - huchenlei [ComfyUI-layerdiffuse](https://github.com/huchenlei/ComfyUI-layerdiffuse) *
+- giriss [comfy-image-saver](https://github.com/giriss/comfy-image-saver)
+- BlenderNeko [ComfyUI_ADV_CLIP_emb](https://github.com/BlenderNeko/ComfyUI_ADV_CLIP_emb)
+- comfyanonymous [ComfyUI_experiments](https://github.com/comfyanonymous/ComfyUI_experiments)
+- bvhari [ComfyUI_ImageProcessing](https://github.com/bvhari/ComfyUI_ImageProcessing)
+- Jcd1230 [rembg-comfyui-node](https://github.com/Jcd1230/rembg-comfyui-node)
+- Loewen-Hob [rembg-comfyui-node-better](https://github.com/Loewen-Hob/rembg-comfyui-node-better)
+- Mamaaaamooooo [batchImg-rembg-ComfyUI-nodes](https://github.com/Mamaaaamooooo/batchImg-rembg-ComfyUI-nodes)
+- Derfuu [Derfuu_ComfyUI_ModdedNodes](https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes)
+- fssorc [ComfyUI_FaceShaper](https://github.com/fssorc/ComfyUI_FaceShaper)
 
   (* the complexity of this custom nodes required extra effort)
 
