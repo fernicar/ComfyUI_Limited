@@ -9,7 +9,7 @@
 # Since embedded distributions do not have pip, you can download pip.pyz, place it next to python.exe, and use it like this:
 # python.exe -s pip.pyz install aiohttp --no-warn-script-location
 
-""" This list of custom nodes will load without errors (2024-11-01)
+""" This list of custom nodes will load without errors (2025-01-06)
 git clone --depth 1 --filter=blob:none https://github.com/ltdrdata/ComfyUI-Manager
 git clone --depth 1 --filter=blob:none https://github.com/rgthree/rgthree-comfy
 git clone --depth 1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use
@@ -17,6 +17,7 @@ git clone --depth 1 --filter=blob:none https://github.com/Suzie1/ComfyUI_Comfyro
 git clone --depth 1 --filter=blob:none https://github.com/shiimizu/ComfyUI_smZNodes
 git clone --depth 1 --filter=blob:none https://github.com/pythongosssss/ComfyUI-Custom-Scripts
 git clone --depth 1 --filter=blob:none https://github.com/giriss/comfy-image-saver
+git clone --depth 1 --filter=blob:none https://github.com/alexopus/ComfyUI-Image-Saver
 git clone --depth 1 --filter=blob:none https://github.com/54rt1n/ComfyUI-DareMerge
 git clone --depth 1 --filter=blob:none https://github.com/jags111/efficiency-nodes-comfyui
 git clone --depth 1 --filter=blob:none https://github.com/WASasquatch/was-node-suite-comfyui
@@ -41,7 +42,6 @@ git clone --depth 1 --filter=blob:none https://github.com/filliptm/ComfyUI_Fill-
 git clone --depth 1 --filter=blob:none https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive
 git clone --depth 1 --filter=blob:none https://github.com/Ttl/ComfyUi_NNLatentUpscale
 git clone --depth 1 --filter=blob:none https://github.com/huchenlei/ComfyUI-layerdiffuse
-git clone --depth 1 --filter=blob:none https://github.com/giriss/comfy-image-saver
 git clone --depth 1 --filter=blob:none https://github.com/BlenderNeko/ComfyUI_ADV_CLIP_emb
 git clone --depth 1 --filter=blob:none https://github.com/comfyanonymous/ComfyUI_experiments
 git clone --depth 1 --filter=blob:none https://github.com/bvhari/ComfyUI_ImageProcessing
@@ -50,6 +50,7 @@ git clone --depth 1 --filter=blob:none https://github.com/Loewen-Hob/rembg-comfy
 git clone --depth 1 --filter=blob:none https://github.com/Mamaaaamooooo/batchImg-rembg-ComfyUI-nodes
 git clone --depth 1 --filter=blob:none https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes
 git clone --depth 1 --filter=blob:none https://github.com/fssorc/ComfyUI_FaceShaper
+git clone --depth 1 --filter=blob:none https://github.com/Acly/comfyui-tooling-nodes
 """
 
 DEBUG = False # You can see which commands are being ignored during testing.
@@ -406,6 +407,9 @@ def retry_load_custom_node(module_path: str, ignore=set(), module_parent="custom
             return True
         else:
             if DEBUG: print(f">\tMissing module: {missing_module}")
+            if missing_module in ignore:
+                if DEBUG: print(f">\tIgnoring module: {missing_module}")
+                return False
             modules_to_mock.append(missing_module)
             update_log_file(log_file_path, missing_module)
             mock_modules([missing_module])
@@ -416,7 +420,7 @@ def retry_load_custom_node(module_path: str, ignore=set(), module_parent="custom
         if DEBUG: print(f">\tFailed to import {module_path} after {retry_limit} retries")
         return False
 
-if DEBUG: print(f"---------------Disabled modules by Limited: {log_modules_to_mock}")
+if DEBUG: print(f">\t---------------Disabled modules by Limited: {log_modules_to_mock}")
 
 
 # Now you can run the original main.py from ComfyUI with Limited functionality

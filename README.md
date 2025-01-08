@@ -19,7 +19,7 @@ You can modify the script to suit your needs, like letting certain modules to lo
 ## Limitations
 
 - No image generation: ComfyUI Limited does not support generating images.
-- Limited custom node support: ComfyUI Limited only supports 24 custom nodes. If you have more installed, they may load, but may not function as expected.
+- Limited custom node support: I'm testing a limited list of custom nodes. If you have more installed, they may load, but may not function as expected.
 - Limited error handling: ComfyUI Limited may ignore some error messages, so be aware of this limitation.
 
 ## Requirements
@@ -98,7 +98,8 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - Suzie1 [ComfyUI_Comfyroll_CustomNodes](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes) *
 - shiimizu [ComfyUI_smZNodes](https://github.com/shiimizu/ComfyUI_smZNodes) *
 - pythongosssss [ComfyUI-Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
-- giriss [comfy-image-saver](https://github.com/giriss/comfy-image-saver)
+- giriss [comfy-image-saver](https://github.com/giriss/comfy-image-saver) (deprecated repo, switch to alexoplus' fork instead)
+- alexoplus [ComfyUI-Image-Saver](https://github.com/alexopus/ComfyUI-Image-Saver)
 - 54rt1n [ComfyUI-DareMerge](https://github.com/54rt1n/ComfyUI-DareMerge)
 - jags111 [efficiency-nodes-comfyui](https://github.com/jags111/efficiency-nodes-comfyui) *
 - WASasquatch [was-node-suite-comfyui](https://github.com/WASasquatch/was-node-suite-comfyui)
@@ -122,7 +123,6 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - ssitu [ComfyUI_UltimateSDUpscale](https://github.com/ssitu/ComfyUI_UltimateSDUpscale)
 - Ttl [ComfyUi_NNLatentUpscale](https://github.com/Ttl/ComfyUi_NNLatentUpscale)
 - huchenlei [ComfyUI-layerdiffuse](https://github.com/huchenlei/ComfyUI-layerdiffuse) *
-- giriss [comfy-image-saver](https://github.com/giriss/comfy-image-saver)
 - BlenderNeko [ComfyUI_ADV_CLIP_emb](https://github.com/BlenderNeko/ComfyUI_ADV_CLIP_emb)
 - comfyanonymous [ComfyUI_experiments](https://github.com/comfyanonymous/ComfyUI_experiments)
 - bvhari [ComfyUI_ImageProcessing](https://github.com/bvhari/ComfyUI_ImageProcessing)
@@ -131,6 +131,7 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - Mamaaaamooooo [batchImg-rembg-ComfyUI-nodes](https://github.com/Mamaaaamooooo/batchImg-rembg-ComfyUI-nodes)
 - Derfuu [Derfuu_ComfyUI_ModdedNodes](https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes)
 - fssorc [ComfyUI_FaceShaper](https://github.com/fssorc/ComfyUI_FaceShaper)
+- Acly [comfyui-tooling-nodes](https://github.com/Acly/comfyui-tooling-nodes)
 
   (* the complexity of this custom nodes required extra effort)
 
