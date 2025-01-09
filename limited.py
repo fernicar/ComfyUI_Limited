@@ -34,7 +34,6 @@ git clone --depth 1 --filter=blob:none https://github.com/Acly/comfyui-inpaint-n
 git clone --depth 1 --filter=blob:none https://github.com/EllangoK/ComfyUI-post-processing-nodes
 git clone --depth 1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials
 git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle
-git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle_Advance
 git clone --depth 1 --filter=blob:none https://github.com/BadCafeCode/masquerade-nodes-comfyui
 git clone --depth 1 --filter=blob:none https://github.com/receyuki/comfyui-prompt-reader-node --recursive
 git clone --depth 1 --filter=blob:none https://github.com/M1kep/ComfyLiterals
@@ -52,6 +51,7 @@ git clone --depth 1 --filter=blob:none https://github.com/Mamaaaamooooo/batchImg
 git clone --depth 1 --filter=blob:none https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes
 git clone --depth 1 --filter=blob:none https://github.com/fssorc/ComfyUI_FaceShaper
 git clone --depth 1 --filter=blob:none https://github.com/Acly/comfyui-tooling-nodes
+git clone --depth 1 --filter=blob:none https://github.com/asagi4/comfyui-prompt-control
 """
 
 DEBUG = False # You can see which commands are being ignored during testing.
@@ -73,6 +73,7 @@ modules_to_mock = [
     'safetensors',
     'safetensors.torch',
     'numpy',
+    'numpy.dtypes',
     'PIL',
     'PIL.PngImagePlugin',
     'PIL.PngImagePlugin.PngInfo',
@@ -130,6 +131,29 @@ for module_name in whitelist:
         if DEBUG: print(f">\tSuccessfully imported {module_name}")
     except ImportError as e:
         if DEBUG: print(f">\tError importing {module_name}: {e}")
+
+# Save the original import_module function
+original_import_module = importlib.import_module
+
+def safe_import_module(name, package=None):
+    try:
+        module = original_import_module(name, package)
+        # Check for required attributes
+        if not hasattr(module, 'NODE_CLASS_MAPPINGS') or not hasattr(module, 'NODE_DISPLAY_NAME_MAPPINGS'):
+            if DEBUG: print(f">\tModule {name} does not have the required attributes.")
+            # return None
+        return module
+    except ImportError as e:
+        if DEBUG: print(f">\tError importing {module_name}: {e}")
+        return None
+
+# Monkey-patch importlib.import_module
+importlib.import_module = safe_import_module
+
+# Import each module dynamically
+# for module_name in whitelist:
+#     module = importlib.import_module(module_name)
+#     if not module and DEBUG: print(f">\tError importing {module_name}")
 
 # Function to remove whitelisted modules and their submodules
 def remove_whitelisted_modules(modules, whitelist):
@@ -317,6 +341,13 @@ def custom_fix(modules_to_mock):
         class MockConfigMixin(metaclass=MockModelMixin): # Mock MockConfigMixin as a subclass of MockModelMixin
                 pass
         sys.modules['diffusers.configuration_utils'].ConfigMixin = MockConfigMixin
+    # for comfyui-prompt-control version checks define the monkeypatched parse function
+    module = 'lark'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for comfyui-prompt-control lark.__version__ checks is applied")
+        # Assign the custom version to the MagicMock object
+        sys.modules[module].__version__ = "1.2.0"
     # for efficiency-nodes-comfyui mocking simpleeval to get more nodes loaded
     module = 'efficiency-nodes-comfyui'
     if module in sys.modules and module not in modules_with_applied_fixes:
@@ -326,6 +357,25 @@ def custom_fix(modules_to_mock):
             if DEBUG: print(f"\t>The Workaround efficiency-nodes-comfyui load simpleeval dependent nodes is applied for next restart")
             sys.modules[module_to_mock] = MagicMock()
             update_log_file(log_file_path, module_to_mock)
+    # for ComfyUI-Impact-Subpack avoid aliasIterableSimpleNamespace = type("IterableSimpleNamespace", (IterableSimpleNamespace,), {}): TypeError: metaclass conflict
+    module = 'ultralytics'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-Impact-Subpack avoid TypeError: metaclass conflict is applied")
+        sys.modules['ultralytics.utils'].IterableSimpleNamespace = MockTypeMetaclass
+        sys.modules['ultralytics.utils.tal'].TaskAlignedAssigner = MockTypeMetaclass
+        sys.modules['ultralytics.nn.tasks'].DetectionModel = MockTypeMetaclass
+        # sys.modules['ultralytics.utils.loss'].E2EDetectLoss = MockTypeMetaclass
+        class MockMeta(type):
+            pass
+        class MockE2EDetectLoss(metaclass=MockMeta):
+            pass
+        mock_loss_modules = MagicMock()
+        mock_loss_modules.E2EDetectLoss = MockE2EDetectLoss
+        sys.modules['ultralytics.utils.loss'] = mock_loss_modules
+        print(f"\t special The Workaround for ComfyUI-Impact-Subpack avoid TypeError: metaclass conflict is applied")
+        import ultralytics.utils.loss as loss_modules
+        aliasv10DetectLoss = type("v10DetectLoss", (loss_modules.E2EDetectLoss,), {})
 
 # End of specific checks by custom nodes------------------------------------------------------------
 
