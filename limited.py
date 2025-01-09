@@ -504,4 +504,22 @@ if __name__ == "__main__":
         success = original_load_custom_node(module_path, ignore, module_parent)
         if not success:
             success = retry_load_custom_node(module_path, ignore, module_parent)
-            success =
+            success = original_load_custom_node(module_path, ignore, module_parent)
+        return success
+    nodes.load_custom_node = monkeypatch_load_custom_node
+    nodes.init_extra_nodes(init_custom_nodes=not args.disable_all_custom_nodes)
+    patch_after_init_extra_nodes()"""
+
+    with open(main_path) as f:
+        code = f.read()
+        if patterntext in code:
+            # Search init_extra_nodes and add patch_after_init_extra_nodes line
+            code = code.replace(patterntext, replacement)
+        else:
+            raise ValueError("Expected pattern not found in main.py")
+        try:
+            code = compile(code, main_path, 'exec') # Compile and execute the modified code
+            exec(code)
+        except Exception as e:
+            traceback.print_exc()
+            print(f"An error occurred while executing the code from {main_path}: {e}")
