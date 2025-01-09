@@ -115,6 +115,7 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - EllangoK [ComfyUI-post-processing-nodes](https://github.com/EllangoK/ComfyUI-post-processing-nodes)
 - cubiq [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials)
 - chflame163 [ComfyUI_LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle) *
+- chflame163 [ComfyUI_LayerStyle_Advance](https://github.com/chflame163/ComfyUI_LayerStyle_Advance) *
 - BadCafeCode [masquerade-nodes-comfyui](https://github.com/BadCafeCode/masquerade-nodes-comfyui)
 - receyuki [comfyui-prompt-reader-node](https://github.com/receyuki/comfyui-prompt-reader-node)
 - M1kep [ComfyLiterals](https://github.com/M1kep/ComfyLiterals)

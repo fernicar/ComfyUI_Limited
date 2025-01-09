@@ -34,6 +34,7 @@ git clone --depth 1 --filter=blob:none https://github.com/Acly/comfyui-inpaint-n
 git clone --depth 1 --filter=blob:none https://github.com/EllangoK/ComfyUI-post-processing-nodes
 git clone --depth 1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials
 git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle
+git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle_Advance
 git clone --depth 1 --filter=blob:none https://github.com/BadCafeCode/masquerade-nodes-comfyui
 git clone --depth 1 --filter=blob:none https://github.com/receyuki/comfyui-prompt-reader-node --recursive
 git clone --depth 1 --filter=blob:none https://github.com/M1kep/ComfyLiterals
