@@ -115,6 +115,7 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - EllangoK [ComfyUI-post-processing-nodes](https://github.com/EllangoK/ComfyUI-post-processing-nodes)
 - cubiq [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials)
 - chflame163 [ComfyUI_LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle) *
+- chflame163 [ComfyUI_LayerStyle_Advance](https://github.com/chflame163/ComfyUI_LayerStyle_Advance) *
 - BadCafeCode [masquerade-nodes-comfyui](https://github.com/BadCafeCode/masquerade-nodes-comfyui)
 - receyuki [comfyui-prompt-reader-node](https://github.com/receyuki/comfyui-prompt-reader-node)
 - M1kep [ComfyLiterals](https://github.com/M1kep/ComfyLiterals)
@@ -135,6 +136,58 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - asagi4 [comfyui-prompt-control](https://github.com/asagi4/comfyui-prompt-control)
 
   (* the complexity of this custom nodes required extra effort)
+
+## import times for custom nodes when model folder is empty:
+<details>
+<summary>tested 2025-01-09</summary>
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\gaussian_blur_ally.py
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\rembg-comfyui-node-better
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\rembg-comfyui-node
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\websocket_image_save.py
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\modelMergeByKey.py
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_Preset_Merger
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUi_NNLatentUpscale
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Florence-2
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\clipseg.py
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\batchImg-rembg-ComfyUI-nodes
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_ADV_CLIP_emb
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\comfy-image-saver
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_ImageProcessing
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-BRIA_AI-RMBG
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyLiterals
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\masquerade-nodes-comfyui
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Image-Saver
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_experiments
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-post-processing-nodes
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Impact-Subpack
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\comfyui-inpaint-nodes
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_IPAdapter_plus
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-layerdiffuse
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Custom-Scripts
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_FaceShaper
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_UltimateSDUpscale
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\comfyui-tooling-nodes
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\comfyui-prompt-control
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_essentials
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-DareMerge
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\efficiency-nodes-comfyui
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\Derfuu_ComfyUI_ModdedNodes
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Manager
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\rgthree-comfy
+   0.0 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\comfyui-prompt-reader-node
+   0.1 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Crystools
+   0.1 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Allor
+   0.1 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\was-node-suite-comfyui
+   0.1 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_smZNodes
+   0.1 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_Fill-Nodes
+   0.1 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Impact-Pack
+   0.2 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_LayerStyle_Advance
+   0.2 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-Easy-Use
+   0.2 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_LayerStyle
+   0.2 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_Comfyroll_CustomNodes
+   0.2 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\comfyui_controlnet_aux
+   0.3 seconds: D:\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_tinyterraNodes
+</details>
 
 ## Acknowledgments
 

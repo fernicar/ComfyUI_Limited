@@ -34,6 +34,7 @@ git clone --depth 1 --filter=blob:none https://github.com/Acly/comfyui-inpaint-n
 git clone --depth 1 --filter=blob:none https://github.com/EllangoK/ComfyUI-post-processing-nodes
 git clone --depth 1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials
 git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle
+git clone --depth 1 --filter=blob:none https://github.com/chflame163/ComfyUI_LayerStyle_Advance
 git clone --depth 1 --filter=blob:none https://github.com/BadCafeCode/masquerade-nodes-comfyui
 git clone --depth 1 --filter=blob:none https://github.com/receyuki/comfyui-prompt-reader-node --recursive
 git clone --depth 1 --filter=blob:none https://github.com/M1kep/ComfyLiterals
@@ -132,28 +133,23 @@ for module_name in whitelist:
     except ImportError as e:
         if DEBUG: print(f">\tError importing {module_name}: {e}")
 
-# Save the original import_module function
-original_import_module = importlib.import_module
+# # Save the original import_module function
+# original_import_module = importlib.import_module
 
-def safe_import_module(name, package=None):
-    try:
-        module = original_import_module(name, package)
-        # Check for required attributes
-        if not hasattr(module, 'NODE_CLASS_MAPPINGS') or not hasattr(module, 'NODE_DISPLAY_NAME_MAPPINGS'):
-            if DEBUG: print(f">\tModule {name} does not have the required attributes.")
-            # return None
-        return module
-    except ImportError as e:
-        if DEBUG: print(f">\tError importing {module_name}: {e}")
-        return None
+# def safe_import_module(name, package=None):
+#     try:
+#         module = original_import_module(name, package)
+#         # Check for required attributes
+#         if not hasattr(module, 'NODE_CLASS_MAPPINGS') or not hasattr(module, 'NODE_DISPLAY_NAME_MAPPINGS'):
+#             if DEBUG: print(f">\tModule {name} does not have the required attributes.")
+#             # return None
+#         return module
+#     except ImportError as e:
+#         if DEBUG: print(f">\tError importing {module_name}: {e}")
+#         return None
 
-# Monkey-patch importlib.import_module
-importlib.import_module = safe_import_module
-
-# Import each module dynamically
-# for module_name in whitelist:
-#     module = importlib.import_module(module_name)
-#     if not module and DEBUG: print(f">\tError importing {module_name}")
+# # Monkey-patch importlib.import_module
+# importlib.import_module = safe_import_module
 
 # Function to remove whitelisted modules and their submodules
 def remove_whitelisted_modules(modules, whitelist):
@@ -358,24 +354,28 @@ def custom_fix(modules_to_mock):
             sys.modules[module_to_mock] = MagicMock()
             update_log_file(log_file_path, module_to_mock)
     # for ComfyUI-Impact-Subpack avoid aliasIterableSimpleNamespace = type("IterableSimpleNamespace", (IterableSimpleNamespace,), {}): TypeError: metaclass conflict
-    module = 'ultralytics'
+    module = 'ultralytics.utils'
     if module in modules_to_mock and module not in modules_with_applied_fixes:
         modules_with_applied_fixes.add(module)
         if DEBUG: print(f">\tThe Workaround for ComfyUI-Impact-Subpack avoid TypeError: metaclass conflict is applied")
         sys.modules['ultralytics.utils'].IterableSimpleNamespace = MockTypeMetaclass
+    module = 'ultralytics.utils.tal'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-Impact-Subpack avoid TypeError: metaclass conflict is applied")
         sys.modules['ultralytics.utils.tal'].TaskAlignedAssigner = MockTypeMetaclass
+    module = 'ultralytics.nn.tasks'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-Impact-Subpack avoid TypeError: metaclass conflict is applied")
         sys.modules['ultralytics.nn.tasks'].DetectionModel = MockTypeMetaclass
-        # sys.modules['ultralytics.utils.loss'].E2EDetectLoss = MockTypeMetaclass
-        class MockMeta(type):
-            pass
-        class MockE2EDetectLoss(metaclass=MockMeta):
-            pass
-        mock_loss_modules = MagicMock()
-        mock_loss_modules.E2EDetectLoss = MockE2EDetectLoss
-        sys.modules['ultralytics.utils.loss'] = mock_loss_modules
-        print(f"\t special The Workaround for ComfyUI-Impact-Subpack avoid TypeError: metaclass conflict is applied")
+    module = 'ultralytics.utils.loss'
+    if module in modules_to_mock and module not in modules_with_applied_fixes:
+        modules_with_applied_fixes.add(module)
+        if DEBUG: print(f">\tThe Workaround for ComfyUI-Impact-Subpack avoid TypeError: metaclass conflict is applied")
         import ultralytics.utils.loss as loss_modules
-        aliasv10DetectLoss = type("v10DetectLoss", (loss_modules.E2EDetectLoss,), {})
+        loss_modules.E2EDetectLoss = MockTypeMetaclass
+
 
 # End of specific checks by custom nodes------------------------------------------------------------
 
@@ -504,22 +504,4 @@ if __name__ == "__main__":
         success = original_load_custom_node(module_path, ignore, module_parent)
         if not success:
             success = retry_load_custom_node(module_path, ignore, module_parent)
-            success = original_load_custom_node(module_path, ignore, module_parent)
-        return success
-    nodes.load_custom_node = monkeypatch_load_custom_node
-    nodes.init_extra_nodes(init_custom_nodes=not args.disable_all_custom_nodes)
-    patch_after_init_extra_nodes()"""
-
-    with open(main_path) as f:
-        code = f.read()
-        if patterntext in code:
-            # Search init_extra_nodes and add patch_after_init_extra_nodes line
-            code = code.replace(patterntext, replacement)
-        else:
-            raise ValueError("Expected pattern not found in main.py")
-        try:
-            code = compile(code, main_path, 'exec') # Compile and execute the modified code
-            exec(code)
-        except Exception as e:
-            traceback.print_exc()
-            print(f"An error occurred while executing the code from {main_path}: {e}")
+            success =
