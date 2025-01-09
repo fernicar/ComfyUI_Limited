@@ -133,7 +133,7 @@ Extra code to prevent installations from custom nodes by alternative methods.
 - Derfuu [Derfuu_ComfyUI_ModdedNodes](https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes)
 - fssorc [ComfyUI_FaceShaper](https://github.com/fssorc/ComfyUI_FaceShaper)
 - Acly [comfyui-tooling-nodes](https://github.com/Acly/comfyui-tooling-nodes)
-- asagi4 [comfyui-prompt-control](https://github.com/asagi4/comfyui-prompt-control)
+- asagi4 [comfyui-prompt-control](https://github.com/asagi4/comfyui-prompt-control) *
 
   (* the complexity of this custom nodes required extra effort)
 
